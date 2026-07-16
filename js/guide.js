@@ -872,17 +872,11 @@
       id: 'firstBuildIntro',
       text: '嗨，我是小蝶。先完成一个 10 秒挑战：输入 9、按一下空格、再输入 3，最后按回车。你会亲手生成一套包含调音台、DSP、功放、9 只全频和 3 只超低的完整系统。',
       chips: [
-        chip('first-build-start', '聚焦输入框', 'primary'),
+        chip('first-build-start', '开始输入', 'primary'),
         chip('first-build-later', '我先自己看看')
       ],
-      extra: '<div class="gd-quick-challenge">' +
-        '<div class="gd-quick-fields">' +
-        '<label><input id="guide-quick-full" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="9" aria-label="全频数量"><span>全频</span></label>' +
-        '<i>+</i>' +
-        '<label><input id="guide-quick-sub" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="3" aria-label="超低数量"><span>超低</span></label>' +
-        '</div>' +
-        '<small><b>按键顺序</b><kbd>9</kbd><i>→</i><kbd>空格</kbd><i>→</i><kbd>3</kbd><i>→</i><kbd>回车</kbd></small></div>' +
-        '<div class="gd-concept"><b>9 = 全频，3 = 超低。</b>其余设备和连接由系统自动反推，完成后小蝶带你查看结果。</div>'
+      extra: '<div class="gd-quick-challenge"><small><b>按键顺序</b><kbd>9</kbd><i>→</i><kbd>空格</kbd><i>→</i><kbd>3</kbd><i>→</i><kbd>回车</kbd></small></div>' +
+        '<div class="gd-concept"><b>页面中央已经准备好两个数量格：</b>9 填在“全频”，空格跳到“超低”填 3，回车生成。完成后小蝶带你查看结果。</div>'
     };
   };
 
@@ -1104,10 +1098,12 @@
   var ACTIONS = {
     'first-build-start': function () {
       saveFirstBuild('started');
-      go('firstBuildIntro');
+      closePanel();
+      if (SP.switchView) SP.switchView('quick');
       setTimeout(function () {
-        var input = el('guide-quick-full');
+        var input = el('lite-quick-full');
         if (input && input.focus) input.focus();
+        spotlight('#lite-quick-full', { persist: true, text: '先输入 9，再按空格' });
       }, 30);
     },
     'first-build-later': function () {
@@ -1538,58 +1534,10 @@
       }
     });
 
-    /* 轻量版首次挑战：延续欢迎页“9 空格 3 回车”的高记忆点操作。 */
-    host.addEventListener('input', function (e) {
-      if (!e.target || ['guide-quick-full', 'guide-quick-sub'].indexOf(e.target.id) < 0) return;
-      e.target.value = String(e.target.value || '').replace(/\D/g, '').slice(0, 2);
-    });
-    host.addEventListener('keydown', function (e) {
-      var isFull = e.target && e.target.id === 'guide-quick-full';
-      var isSub = e.target && e.target.id === 'guide-quick-sub';
-      if (!isFull && !isSub) return;
-      if (isFull && (e.key === ' ' || e.code === 'Space')) {
-        e.preventDefault();
-        var nextInput = el('guide-quick-sub');
-        if (nextInput && nextInput.focus) {
-          nextInput.focus();
-          if (nextInput.select) nextInput.select();
-        }
-        return;
-      }
-      if (e.key !== 'Enter') return;
-      e.preventDefault();
-      var fullInput = el('guide-quick-full');
-      var subInput = el('guide-quick-sub');
-      var fullValue = String((fullInput || {}).value || '').trim();
-      var subValue = String((subInput || {}).value || '').trim();
-      if (fullValue !== '9' || subValue !== '3') {
-        var message = el('guide-msg');
-        if (message) message.innerHTML = msgHtml('差一点：在“全频”输入 9，按空格跳到“超低”，输入 3，再按回车。');
-        var retryInput = fullValue !== '9' ? fullInput : subInput;
-        if (retryInput && retryInput.focus) retryInput.focus();
-        if (retryInput && retryInput.select) retryInput.select();
-        return;
-      }
-      saveFirstBuild('started');
-      if (!SP.openQuickLayout) return;
-      closePanel();
-      SP.openQuickLayout({ mode: 'reverse', command: '9只全频，3只超低' });
-      if (typeof SP.applySpeakerVoiceCommand === 'function') {
-        SP.applySpeakerVoiceCommand('全频选库存最多的');
-        SP.applySpeakerVoiceCommand('超低选库存最多的');
-        SP.applySpeakerVoiceCommand('确认全频');
-        SP.applySpeakerVoiceCommand('确认超低');
-      }
-      var create = el('ql-confirm');
-      if (create && create.click) create.click();
-    });
-
     if (firstBuildAvailable() && firstBuild.status === 'new') {
       setTimeout(function () {
         if (firstBuild.status !== 'new') return;
         openPanel('firstBuildIntro');
-        var input = el('guide-quick-full');
-        if (input && input.focus) input.focus();
       }, 450);
     }
   };

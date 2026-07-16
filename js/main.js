@@ -844,8 +844,58 @@
       if (Store.redo()) SP.renderAll();
     });
     el('btn-quick').addEventListener('click', function () { SP.openQuickLayout(); });
-    var quickHero = el('btn-quick-hero');
-    if (quickHero) quickHero.addEventListener('click', function () { SP.openQuickLayout({ mode: 'reverse' }); });
+    var liteQuickFull = el('lite-quick-full');
+    var liteQuickSub = el('lite-quick-sub');
+    var liteQuickGenerate = el('btn-quick-generate');
+    function cleanLiteCount(input) {
+      if (!input) return;
+      input.value = String(input.value || '').replace(/\D/g, '').slice(0, 2);
+    }
+    function runLiteQuickPlan() {
+      var fullN = Math.max(0, parseInt((liteQuickFull || {}).value, 10) || 0);
+      var subN = Math.max(0, parseInt((liteQuickSub || {}).value, 10) || 0);
+      if (!fullN && !subN) {
+        SP.toast('先输入全频或超低数量', true);
+        if (liteQuickFull && liteQuickFull.focus) liteQuickFull.focus();
+        return;
+      }
+      var command = [];
+      if (fullN) command.push(fullN + '只全频');
+      if (subN) command.push(subN + '只超低');
+      if (SP.Guide && SP.Guide.beginFirstBuildSilently) SP.Guide.beginFirstBuildSilently();
+      if (SP.Guide && SP.Guide.close) SP.Guide.close();
+      SP.openQuickLayout({ mode: 'reverse', command: command.join('，') });
+      if (typeof SP.applySpeakerVoiceCommand === 'function') {
+        if (fullN) {
+          SP.applySpeakerVoiceCommand('全频选库存最多的');
+          SP.applySpeakerVoiceCommand('确认全频');
+        }
+        if (subN) {
+          SP.applySpeakerVoiceCommand('超低选库存最多的');
+          SP.applySpeakerVoiceCommand('确认超低');
+        }
+      }
+      var create = el('ql-confirm');
+      if (create && create.click) create.click();
+    }
+    [liteQuickFull, liteQuickSub].forEach(function (input) {
+      if (!input) return;
+      input.addEventListener('input', function () { cleanLiteCount(input); });
+      input.addEventListener('keydown', function (e) {
+        if (input === liteQuickFull && (e.key === ' ' || e.code === 'Space')) {
+          e.preventDefault();
+          if (liteQuickSub && liteQuickSub.focus) {
+            liteQuickSub.focus();
+            if (liteQuickSub.select) liteQuickSub.select();
+          }
+          return;
+        }
+        if (e.key === 'Enter') { e.preventDefault(); runLiteQuickPlan(); }
+      });
+    });
+    if (liteQuickGenerate) liteQuickGenerate.addEventListener('click', runLiteQuickPlan);
+    var quickAdvanced = el('btn-quick-advanced');
+    if (quickAdvanced) quickAdvanced.addEventListener('click', function () { SP.openQuickLayout({ mode: 'reverse' }); });
     var openWiring = el('btn-open-wiring');
     if (openWiring) openWiring.addEventListener('click', function () { SP.switchView('wiring'); });
     var tplBtn = el('btn-templates');

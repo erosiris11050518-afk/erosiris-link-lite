@@ -20,7 +20,7 @@
 </script>
 <link rel="stylesheet" href="css/style.css?v=20260714-1">
 <link rel="stylesheet" href="css/workbench-skin.css?v=20260712-5">
-<link rel="stylesheet" href="css/lite.css?v=20260716-2">
+<link rel="stylesheet" href="css/lite.css?v=20260716-3">
 </head>
 <body>
 
@@ -91,23 +91,41 @@
 <main>
   <section class="view active lite-quick-view" id="view-quick">
     <div class="lite-quick-shell">
-      <div class="lite-quick-copy">
-        <span class="lite-eyebrow">网络咨询工作台</span>
-        <h1>把客户的一句话，变成可核对的音响系统方案</h1>
-        <p>输入客户的音箱数量、类型与型号，系统将反推功放、DSP、调音台需求，并自动生成设备连线与采购清单。</p>
-        <div class="lite-quick-actions">
-          <button class="btn primary" id="btn-quick-hero">开始生成方案</button>
-          <button class="btn ghost" id="btn-open-wiring">查看系统框图</button>
+      <header class="lite-quick-heading">
+        <span class="lite-eyebrow">快速方案</span>
+        <h1>两个数量，一套系统</h1>
+        <p>输入全频与超低数量，功放、DSP、调音台和连线自动完成。</p>
+      </header>
+
+      <section class="lite-quick-builder" aria-label="输入音箱数量生成系统方案">
+        <div class="lite-quick-fields">
+          <label>
+            <input id="lite-quick-full" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="9" aria-label="全频数量">
+            <span>全频</span>
+          </label>
+          <i>+</i>
+          <label>
+            <input id="lite-quick-sub" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="3" aria-label="超低数量">
+            <span>超低</span>
+          </label>
         </div>
-        <p class="lite-privacy">方案数据默认只保存在当前浏览器，不上传客户配置。</p>
+        <div class="lite-key-sequence" aria-label="按键顺序：数字、空格、数字、回车">
+          <span>输入数字</span><i>→</i><kbd>空格</kbd><i>→</i><span>输入数字</span><i>→</i><kbd>回车</kbd>
+        </div>
+        <button type="button" class="btn primary lite-generate" id="btn-quick-generate">生成方案 <span>↵</span></button>
+      </section>
+
+      <div class="lite-quick-result" aria-label="方案输出内容">
+        <span><b>系统框图</b><small>设备与信号连接</small></span>
+        <span><b>线材清单</b><small>数量与采购汇总</small></span>
+        <span><b>工程报告</b><small>核对、打印与交付</small></span>
       </div>
-      <div class="lite-flow" aria-label="方案生成流程">
-        <div><b>01</b><span>描述需求</span><small>数量、类型、型号</small></div>
-        <i>→</i>
-        <div><b>02</b><span>智能反推</span><small>功率、通道、设备</small></div>
-        <i>→</i>
-        <div><b>03</b><span>输出方案</span><small>框图、线材、报告</small></div>
-      </div>
+
+      <footer class="lite-quick-footer">
+        <button type="button" id="btn-quick-advanced">需要指定型号或功率？进入精确配置</button>
+        <button type="button" id="btn-open-wiring">查看已有系统</button>
+        <small>方案只保存在当前浏览器</small>
+      </footer>
     </div>
   </section>
 
@@ -278,7 +296,7 @@
 <script src="js/mixer.js?v=20260716-1"></script>
 <script src="js/teach.js?v=20260716-1"></script>
 <script src="js/report.js?v=20260716-1"></script>
-<script src="js/guide.js?v=20260716-2"></script>
-<script src="js/main.js?v=20260716-1"></script>
+<script src="js/guide.js?v=20260716-3"></script>
+<script src="js/main.js?v=20260716-3"></script>
 </body>
 </html>
