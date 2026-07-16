@@ -29,6 +29,7 @@
   el('modal-box').classList.remove('modal-quick');
   el('modal-box').classList.remove('modal-photo-crop');
   el('modal-box').classList.remove('modal-stage-roster');
+  el('modal-box').classList.remove('modal-contact');
   if (el('modal-box').removeAttribute) el('modal-box').removeAttribute('data-crop-aspect');
     el('modal-box').innerHTML = '';
   }

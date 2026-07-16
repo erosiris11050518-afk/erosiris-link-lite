@@ -564,6 +564,59 @@
       });
     }
 
+    /* ---------- 内测联系与支持作者 ---------- */
+    function openContactPanel() {
+      SP.openModal(
+        '<div class="modal-head lite-contact-head"><div><span>本地版进阶功能</span><h3>联系开发者</h3></div>' +
+        '<button class="btn icon" data-close-modal aria-label="关闭联系开发者">✕</button></div>' +
+        '<div class="modal-body lite-contact-body">' +
+        '<section class="lite-contact-intro"><p>联系开发者，免费学习，适当付费定制。</p>' +
+        '<div class="lite-wechat-id"><span>微信</span><strong>EROSAUC</strong>' +
+        '<button type="button" class="btn ghost sm" data-copy-wechat>复制微信号</button></div></section>' +
+        '<div class="lite-contact-grid">' +
+        '<article class="lite-contact-card"><header><span>微信二维码</span><h4>联系开发者</h4>' +
+        '<p>免费学习 · 适当付费定制</p></header>' +
+        '<img src="assets/contact/wechat-erosauc.jpg" alt="开发者微信 EROSAUC 二维码" decoding="async">' +
+        '<small>长按二维码可保存或识别</small></article>' +
+        '<article class="lite-contact-card support"><header><span>支持作者</span><h4>请我喝奶茶</h4>' +
+        '<p>欢迎任何形式的支持作者开发</p></header>' +
+        '<img src="assets/contact/support-author.jpg" alt="支持作者赞赏二维码" decoding="async">' +
+        '<small>你的支持会用于继续维护与开发</small></article>' +
+        '</div></div>' +
+        '<div class="modal-foot lite-contact-foot"><p>感谢体验 ErosIris-Link</p>' +
+        '<button class="btn primary" data-close-modal>完成</button></div>'
+      );
+      el('modal-box').classList.add('modal-contact');
+    }
+
+    document.addEventListener('click', function (e) {
+      var contactOpen = e.target.closest && e.target.closest('[data-contact-open]');
+      if (contactOpen) { openContactPanel(); return; }
+      var copyWechat = e.target.closest && e.target.closest('[data-copy-wechat]');
+      if (!copyWechat) return;
+      function copied() {
+        copyWechat.textContent = '已复制 EROSAUC';
+        SP.toast('微信号 EROSAUC 已复制');
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('EROSAUC').then(copied).catch(function () {
+          var temp = document.createElement('textarea');
+          temp.value = 'EROSAUC';
+          document.body.appendChild(temp);
+          temp.select();
+          try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：EROSAUC', true); }
+          document.body.removeChild(temp);
+        });
+      } else {
+        var temp = document.createElement('textarea');
+        temp.value = 'EROSAUC';
+        document.body.appendChild(temp);
+        temp.select();
+        try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：EROSAUC', true); }
+        document.body.removeChild(temp);
+      }
+    });
+
     /* ---------- 黑 / 白主题 ---------- */
     function applyTheme(t) {
       document.documentElement.setAttribute('data-theme', t);
