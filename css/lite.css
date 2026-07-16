@@ -43,6 +43,12 @@
   text-align: center;
 }
 
+.lite-advanced-shell.has-preview {
+  width: min(1120px, 100%);
+  margin-block: clamp(8px, 4vh, 42px);
+  padding: clamp(24px, 3vw, 38px);
+}
+
 .lite-advanced-shell span {
   color: #eda63d;
   font: 700 11px/1 Menlo, monospace;
@@ -62,6 +68,40 @@
   line-height: 1.8;
 }
 
+.lite-preview-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 24px 0 22px;
+}
+
+.lite-preview-gallery.single { grid-template-columns: minmax(0, 1fr); }
+
+.lite-preview-gallery figure {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line, #2b333d);
+  border-radius: 16px;
+  background: var(--panel2, rgba(255,255,255,.025));
+  box-shadow: 0 16px 42px rgba(0,0,0,.16);
+}
+
+.lite-preview-gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #eaf4f9;
+}
+
+.lite-preview-gallery figcaption {
+  padding: 10px 12px;
+  color: var(--text-dim, #93a0ae);
+  font: 650 11px/1.4 var(--sans, sans-serif);
+  text-align: left;
+}
+
 .lite-beta-contact {
   display: inline-flex;
   align-items: center;
@@ -75,6 +115,7 @@
   font: 750 14px/1 var(--sans, sans-serif);
   cursor: pointer;
   transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  animation: lite-beta-breathe 3.8s ease-in-out infinite;
 }
 
 .lite-beta-contact:hover,
@@ -83,6 +124,62 @@
   background: rgba(237,166,61,.2);
   transform: translateY(-1px);
   outline: none;
+}
+
+@keyframes lite-beta-breathe {
+  0%, 100% {
+    border-color: rgba(237,166,61,.3);
+    background: rgba(237,166,61,.1);
+    box-shadow: 0 0 0 0 rgba(237,166,61,0);
+    filter: brightness(.96);
+  }
+  50% {
+    border-color: rgba(237,166,61,.72);
+    background: rgba(237,166,61,.18);
+    box-shadow: 0 0 0 4px rgba(237,166,61,.055), 0 0 22px rgba(237,166,61,.12);
+    filter: brightness(1.08);
+  }
+}
+
+.lite-beta-guide {
+  width: min(560px, 100%);
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--line, #2b333d);
+  border-radius: 14px;
+  background: var(--panel2, rgba(255,255,255,.025));
+  color: var(--text-dim, #93a0ae);
+  font: 650 12px/1.45 var(--sans, sans-serif);
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+
+.lite-beta-guide:hover,
+.lite-beta-guide:focus-visible {
+  border-color: var(--brand, #69bfe8);
+  background: var(--brand-softer, rgba(105,191,232,.1));
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.lite-beta-guide img {
+  flex: none;
+  width: 42px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(42,155,220,.22));
+}
+
+.lite-beta-guide span { color: var(--text-dim, #93a0ae); }
+.lite-beta-guide b { margin-right: 6px; color: var(--brand, #69bfe8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lite-beta-contact { animation: none; }
 }
 
 .modal.modal-contact {
@@ -677,8 +774,29 @@
     padding: 18px 14px;
   }
   .lite-advanced-shell { margin: 18px auto; padding: 28px 20px; border-radius: 16px; }
+  .lite-advanced-shell.has-preview { padding: 22px 14px; }
   .lite-advanced-shell h2 { font-size: 34px; }
   .lite-advanced-shell p { font-size: 14px; }
+  .lite-preview-gallery {
+    display: flex;
+    gap: 10px;
+    margin: 20px -2px 18px;
+    padding: 0 2px 6px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lite-preview-gallery::-webkit-scrollbar { display: none; }
+  .lite-preview-gallery figure {
+    flex: 0 0 88%;
+    scroll-snap-align: center;
+    border-radius: 13px;
+  }
+  .lite-preview-gallery.single figure { flex-basis: 100%; }
+  .lite-preview-gallery figcaption { padding: 9px 10px; font-size: 10px; }
+  .lite-beta-guide { justify-content: flex-start; padding: 8px 10px; text-align: left; }
+  .lite-beta-guide img { width: 38px; height: 28px; }
 
   .lite-contact-intro { align-items: stretch; flex-direction: column; }
   .lite-wechat-id { justify-content: space-between; }
