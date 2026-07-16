@@ -196,7 +196,7 @@
   var ALL_COURSE_ORDER = COURSE_ORDER.concat(ADVANCED_ORDER);
   var COURSES = {
     templates: {
-      title: '建立音响型号库', short: '音响数据', time: '约 4 分钟',
+      title: '使用自己的设备模板', short: '用自己的模板', time: '约 4 分钟',
       steps: [
         { text: '先打开顶栏的「模板库」。小蝶会带你认识下载、导入、提取和备份入口。',
           target: '#btn-templates', callout: '第一步：打开模板库', wait: 'click' },
@@ -779,8 +779,8 @@
       : (basicsHandled
         ? '基础流程已经处理好啦。下面的进阶教学会带你认识第一主界面的每一个按钮。'
         : (s.hasUserTpls
-        ? '型号库已经准备好了。五门基础教学会从音响数据一直带到工程交付。'
-        : '嗨，我是小蝶。第一次来就从“音响数据”开始，我会一步一步带你操作。'));
+        ? '型号库已经准备好了。五门基础教学会从自己的模板一直带到工程交付。'
+        : '嗨，我是小蝶。第一次来就从“用自己的模板”开始，我会一步一步带你操作。'));
     var chips = [];
     var demoCaseActions = demoNeedsCase
       ? '<div class="gd-demo-case-actions">' +
@@ -875,9 +875,13 @@
         chip('first-build-start', '聚焦输入框', 'primary'),
         chip('first-build-later', '我先自己看看')
       ],
-      extra: '<div class="gd-quick-challenge"><label for="guide-quick-challenge">全频数量 <b>空格</b> 超低数量</label>' +
-        '<input id="guide-quick-challenge" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="试试输入 9 3" aria-label="输入 9 空格 3 后按回车">' +
-        '<small>挑战指令：<kbd>9</kbd> <kbd>空格</kbd> <kbd>3</kbd> <kbd>回车</kbd></small></div>' +
+      extra: '<div class="gd-quick-challenge">' +
+        '<div class="gd-quick-fields">' +
+        '<label><input id="guide-quick-full" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="9" aria-label="全频数量"><span>全频</span></label>' +
+        '<i>+</i>' +
+        '<label><input id="guide-quick-sub" type="text" inputmode="text" maxlength="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="3" aria-label="超低数量"><span>超低</span></label>' +
+        '</div>' +
+        '<small><b>按键顺序</b><kbd>9</kbd><i>→</i><kbd>空格</kbd><i>→</i><kbd>3</kbd><i>→</i><kbd>回车</kbd></small></div>' +
         '<div class="gd-concept"><b>9 = 全频，3 = 超低。</b>其余设备和连接由系统自动反推，完成后小蝶带你查看结果。</div>'
     };
   };
@@ -1102,7 +1106,7 @@
       saveFirstBuild('started');
       go('firstBuildIntro');
       setTimeout(function () {
-        var input = el('guide-quick-challenge');
+        var input = el('guide-quick-full');
         if (input && input.focus) input.focus();
       }, 30);
     },
@@ -1535,16 +1539,35 @@
     });
 
     /* 轻量版首次挑战：延续欢迎页“9 空格 3 回车”的高记忆点操作。 */
+    host.addEventListener('input', function (e) {
+      if (!e.target || ['guide-quick-full', 'guide-quick-sub'].indexOf(e.target.id) < 0) return;
+      e.target.value = String(e.target.value || '').replace(/\D/g, '').slice(0, 2);
+    });
     host.addEventListener('keydown', function (e) {
-      var input = e.target && e.target.id === 'guide-quick-challenge' ? e.target : null;
-      if (!input || e.key !== 'Enter') return;
+      var isFull = e.target && e.target.id === 'guide-quick-full';
+      var isSub = e.target && e.target.id === 'guide-quick-sub';
+      if (!isFull && !isSub) return;
+      if (isFull && (e.key === ' ' || e.code === 'Space')) {
+        e.preventDefault();
+        var nextInput = el('guide-quick-sub');
+        if (nextInput && nextInput.focus) {
+          nextInput.focus();
+          if (nextInput.select) nextInput.select();
+        }
+        return;
+      }
+      if (e.key !== 'Enter') return;
       e.preventDefault();
-      var value = String(input.value || '').trim().replace(/\s+/g, ' ');
-      if (value !== '9 3') {
+      var fullInput = el('guide-quick-full');
+      var subInput = el('guide-quick-sub');
+      var fullValue = String((fullInput || {}).value || '').trim();
+      var subValue = String((subInput || {}).value || '').trim();
+      if (fullValue !== '9' || subValue !== '3') {
         var message = el('guide-msg');
-        if (message) message.innerHTML = msgHtml('差一点：请准确输入 <b>9 空格 3</b>，然后按回车。');
-        input.focus();
-        if (input.select) input.select();
+        if (message) message.innerHTML = msgHtml('差一点：在“全频”输入 9，按空格跳到“超低”，输入 3，再按回车。');
+        var retryInput = fullValue !== '9' ? fullInput : subInput;
+        if (retryInput && retryInput.focus) retryInput.focus();
+        if (retryInput && retryInput.select) retryInput.select();
         return;
       }
       saveFirstBuild('started');
@@ -1565,7 +1588,7 @@
       setTimeout(function () {
         if (firstBuild.status !== 'new') return;
         openPanel('firstBuildIntro');
-        var input = el('guide-quick-challenge');
+        var input = el('guide-quick-full');
         if (input && input.focus) input.focus();
       }, 450);
     }

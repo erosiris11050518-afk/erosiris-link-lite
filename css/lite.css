@@ -245,32 +245,70 @@
   background: var(--brand-softer, rgba(105,191,232,.1));
 }
 
-.gd-quick-challenge label {
-  color: var(--text-dim, #93a0ae);
-  font: 700 11px/1.4 var(--sans, sans-serif);
+.gd-quick-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
 }
 
-.gd-quick-challenge label b { color: var(--brand, #69bfe8); }
+.gd-quick-fields > i {
+  color: var(--text-faint, #73808d);
+  font: 700 16px/1 var(--mono, monospace);
+  font-style: normal;
+}
 
-.gd-quick-challenge input {
-  width: 100%;
-  min-height: 50px;
-  padding: 8px 14px;
+.gd-quick-fields label {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(54px, .8fr) 1fr;
+  align-items: center;
+  overflow: hidden;
   border: 1px solid var(--glass-border-strong, rgba(255,255,255,.16));
   border-radius: 10px;
   background: var(--inset, rgba(0,0,0,.24));
-  color: var(--text, #e7edf3);
-  font: 800 22px/1 var(--mono, monospace);
-  letter-spacing: .12em;
-  outline: none;
 }
 
-.gd-quick-challenge input:focus {
+.gd-quick-fields label:focus-within {
   border-color: var(--brand, #69bfe8);
   box-shadow: var(--focus-ring, 0 0 0 3px rgba(105,191,232,.18));
 }
 
-.gd-quick-challenge small { color: var(--text-faint, #73808d); }
+.gd-quick-fields input {
+  width: 100%;
+  min-height: 50px;
+  min-width: 0;
+  padding: 8px 4px 8px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--text, #e7edf3);
+  font: 800 22px/1 var(--mono, monospace);
+  text-align: center;
+  outline: none;
+}
+
+.gd-quick-fields input::placeholder { color: var(--text-faint, #73808d); opacity: .78; }
+
+.gd-quick-fields label span {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  padding: 0 8px;
+  border-left: 1px solid var(--line, #2b333d);
+  color: var(--text-dim, #93a0ae);
+  font: 750 12px/1 var(--sans, sans-serif);
+}
+
+.gd-quick-challenge small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--text-faint, #73808d);
+  white-space: nowrap;
+}
+.gd-quick-challenge small b { margin-right: 3px; color: var(--text-dim, #93a0ae); font-size: 10px; }
+.gd-quick-challenge small > i { color: var(--text-faint, #73808d); font-style: normal; }
 .gd-quick-challenge kbd {
   display: inline-flex;
   min-width: 24px;
