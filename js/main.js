@@ -571,12 +571,12 @@
         '<button class="btn icon" data-close-modal aria-label="关闭联系开发者">✕</button></div>' +
         '<div class="modal-body lite-contact-body">' +
         '<section class="lite-contact-intro"><p>联系开发者，免费学习，适当付费定制。</p>' +
-        '<div class="lite-wechat-id"><span>微信</span><strong>EROSAUC</strong>' +
+        '<div class="lite-wechat-id"><span>微信</span><strong>ErosAUC</strong>' +
         '<button type="button" class="btn ghost sm" data-copy-wechat>复制微信号</button></div></section>' +
         '<div class="lite-contact-grid">' +
         '<article class="lite-contact-card"><header><span>微信二维码</span><h4>联系开发者</h4>' +
         '<p>免费学习 · 适当付费定制</p></header>' +
-        '<img src="assets/contact/wechat-erosauc.jpg" alt="开发者微信 EROSAUC 二维码" decoding="async">' +
+        '<img src="assets/contact/wechat-erosauc.jpg" alt="开发者微信 ErosAUC 二维码" decoding="async">' +
         '<small>长按二维码可保存或识别</small></article>' +
         '<article class="lite-contact-card support"><header><span>支持作者</span><h4>请我喝奶茶</h4>' +
         '<p>欢迎任何形式的支持作者开发</p></header>' +
@@ -595,24 +595,24 @@
       var copyWechat = e.target.closest && e.target.closest('[data-copy-wechat]');
       if (!copyWechat) return;
       function copied() {
-        copyWechat.textContent = '已复制 EROSAUC';
-        SP.toast('微信号 EROSAUC 已复制');
+        copyWechat.textContent = '已复制 ErosAUC';
+        SP.toast('微信号 ErosAUC 已复制');
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText('EROSAUC').then(copied).catch(function () {
+        navigator.clipboard.writeText('ErosAUC').then(copied).catch(function () {
           var temp = document.createElement('textarea');
-          temp.value = 'EROSAUC';
+          temp.value = 'ErosAUC';
           document.body.appendChild(temp);
           temp.select();
-          try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：EROSAUC', true); }
+          try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：ErosAUC', true); }
           document.body.removeChild(temp);
         });
       } else {
         var temp = document.createElement('textarea');
-        temp.value = 'EROSAUC';
+        temp.value = 'ErosAUC';
         document.body.appendChild(temp);
         temp.select();
-        try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：EROSAUC', true); }
+        try { document.execCommand('copy'); copied(); } catch (err) { SP.toast('微信号：ErosAUC', true); }
         document.body.removeChild(temp);
       }
     });
